@@ -1,0 +1,47 @@
+Bootstrap: library
+From: ubuntu:18.04
+
+%label
+    maintainer="Venkat Malladi"
+    authors='venkat.malladi@utsouthwestern.edu'
+    version='0.1.0'
+    software='fastqc, cutadapt, trim_galore'
+    description='Image containing software to run FASTQ trimming and quality metrics.'
+
+%environment
+    OPENJDK_VERSION=8.0.144
+    FASTQC_VERSION=0.11.5
+    CUTADAPT_VERSION=1.9.1
+    TRIMGALORE_VERSION="0.4.1"
+    PATH=/opt/conda/bin/python:/miniconda/bin:$PATH
+
+    export OPENJDK_VERSION FASTQC_VERSION CUTADAPT_VERSION TRIMGALORE_VERSION PATH
+
+%post
+    OPENJDK_VERSION=8.0.144
+    FASTQC_VERSION=0.11.5
+    CUTADAPT_VERSION=1.9.1
+    TRIMGALORE_VERSION="0.4.1"
+    PATH=/opt/conda/bin/python:/miniconda/bin:$PATH
+
+    export OPENJDK_VERSION FASTQC_VERSION CUTADAPT_VERSION TRIMGALORE_VERSION PATH
+
+    apt-get -y update --fix-missing && \
+    apt-get install -y wget gzip curl git && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/*
+    curl -LO http://repo.continuum.io/miniconda/Miniconda-latest-Linux-x86_64.sh
+    bash Miniconda-latest-Linux-x86_64.sh -p /miniconda -b
+    rm Miniconda-latest-Linux-x86_64.sh
+    conda update -y conda
+    conda install -c conda-forge openjdk=${OPENJDK_VERSION}
+    conda install -c bioconda fastqc=${FASTQC_VERSION}
+    conda install -c bioconda cutadapt=${CUTADAPT_VERSION}
+    conda install -c bioconda trim-galore=${TRIMGALORE_VERSION}
+
+%help
+    
+    echo "TODO" 
+
+%runscript
+    $@
